@@ -1,0 +1,297 @@
+  /* ── Page ───────────────────────────────────────────────────────────────── */
+.page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+  position: relative;
+}
+
+.bgGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 60% 40% at 50% 0%,
+    rgba(124, 106, 255, 0.08) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Top Bar ────────────────────────────────────────────────────────────── */
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(12px);
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.logoSmall {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.logoMark {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  font-family: var(--font-display);
+  flex-shrink: 0;
+}
+
+.logoText {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.roomChip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  min-width: 0;
+}
+
+.roomLabel {
+  font-size: 10px;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.roomCode {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copyBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  padding: 0;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+
+.copyBtn:hover { opacity: 1; }
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  transition: background 0.3s;
+  flex-shrink: 0;
+}
+
+.statusDotConnected  { background: var(--green); }
+.statusDotError      { background: var(--red); }
+.statusDotDefault    { background: var(--amber); }
+
+.statusText {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text2);
+  min-width: 42px;
+}
+
+/* ── Main Layout ────────────────────────────────────────────────────────── */
+/* .main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+} */
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Tiles Sidebar ──────────────────────────────────────────────────────── */
+/* .tiles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  width: 280px; 
+  flex-shrink: 0;
+  overflow-y: auto;
+} */
+
+.tiles {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  width: 340px; 
+  flex-shrink: 0;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.02);
+  border-right: 1px solid var(--border);
+}
+
+/* ── Transcript ─────────────────────────────────────────────────────────── */
+.transcriptWrap {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  background: var(--bg);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+
+/* Tablet: Medium Sidebar */
+@media (max-width: 1024px) {
+  .tiles {
+    width: 280px;
+    padding: 16px;
+  }
+}
+
+/* Tablet: compress sidebar
+@media (max-width: 900px) {
+  .tiles {
+    width: 220px;
+    padding: 12px;
+  }
+} */
+
+
+/* Mobile: The Vertical Stack ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .main {
+    flex-direction: column; /* Stack tiles on top of transcript */
+  }
+
+  .tiles {
+    width: 100%;
+    height: auto;
+    flex-direction: row; /* Tiles sit side-by-side on mobile */
+    padding: 12px;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    /* Improve mobile scrolling feel */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; 
+  }
+  
+  .tiles::-webkit-scrollbar { display: none; }
+
+  /* Allow tiles to be a fixed size on mobile so they don't shrink */
+  .tiles > * {
+    flex: 0 0 160px; 
+  }
+
+  .transcriptWrap {
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+
+/* Top Bar desktop polish */
+@media (min-width: 769px) {
+  .topBar {
+    padding: 16px 32px;
+  }
+  
+  .logoText {
+    font-size: 18px;
+  }
+}
+
+
+/* Mobile: stack vertically */
+/* @media (max-width: 640px) {
+  .topBar {
+    padding: 10px 14px;
+  }
+
+  .logoText {
+    display: none;
+  }
+
+  .roomLabel {
+    display: none;
+  }
+
+  .main {
+    flex-direction: column;
+  }
+
+  .tiles {
+    width: 100%;
+    flex-direction: row;
+    flex-shrink: 0;
+    height: auto;
+    padding: 10px;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .transcriptWrap {
+    flex: 1;
+    min-height: 0;
+  }
+} */
+
+/* Very small screens */
+@media (max-width: 380px) {
+  .roomChip {
+    display: none;
+  }
+}

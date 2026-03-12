@@ -1,0 +1,353 @@
+/* ── Page ───────────────────────────────────────────────────────────────── */
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% -10%,
+    rgba(124, 106, 255, 0.18) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  width: 100%;
+  max-width: 1100px;
+  z-index: 1;
+}
+
+.heroContent {
+  text-align: center;
+  max-width: 500px;
+}
+
+/* ── Card ───────────────────────────────────────────────────────────────── */
+/* .card {
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 40px 36px;
+  animation: fadeUp 0.45s ease;
+  position: relative;
+  z-index: 1;
+  margin: auto;
+} */
+.card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 40px 36px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  animation: fadeUp 0.45s ease;
+}
+
+/* ── Logo ───────────────────────────────────────────────────────────────── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.logoMark {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.logoText {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+/* ── Heading ────────────────────────────────────────────────────────────── */
+/* .heading {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 5vw, 30px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.sub {
+  color: var(--text2);
+  font-size: 14px;
+  margin-bottom: 32px;
+  line-height: 1.5;
+} */
+
+.heading {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 6vw, 56px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.sub {
+  color: var(--text2);
+  font-size: clamp(16px, 2vw, 18px);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+/* ── Field ──────────────────────────────────────────────────────────────── */
+.field {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 8px;
+}
+
+.input {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  font-size: 15px;
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.inputMono {
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+.inputSmall {
+  font-size: 13px;
+}
+
+/* ── Language Grid ──────────────────────────────────────────────────────── */
+.langGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.langBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 4px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text2);
+  font-size: 20px;
+}
+
+.langBtn:hover {
+  border-color: var(--border2);
+  background: var(--bg4);
+}
+
+.langBtnActive {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+  color: var(--accent2);
+}
+
+.langLabel {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-family: var(--font-body);
+  color: inherit;
+}
+
+/* ── Tabs ───────────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  background: var(--bg3);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  margin-bottom: 20px;
+  gap: 3px;
+}
+
+.tab {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--text2);
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tabActive {
+  background: var(--bg2);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Server Toggle ──────────────────────────────────────────────────────── */
+.serverToggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  color: var(--text2);
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 4px;
+  transition: color 0.15s;
+}
+
+.serverToggle:hover {
+  color: var(--text);
+}
+
+.serverChevron {
+  opacity: 0.5;
+  font-size: 11px;
+  transition: transform 0.2s;
+}
+
+.serverChevronOpen {
+  transform: rotate(180deg);
+}
+
+/* ── Error ──────────────────────────────────────────────────────────────── */
+.error {
+  background: var(--red-bg);
+  border: 1px solid rgba(255, 92, 92, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  color: var(--red);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* ── CTA ────────────────────────────────────────────────────────────────── */
+.cta {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border: none;
+}
+
+.cta:hover  { opacity: 0.9; }
+.cta:active { transform: scale(0.99); }
+
+.hint {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+@media (min-width: 960px) {
+  .container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+  }
+
+  .heroContent {
+    text-align: left;
+    flex: 1;
+  }
+
+  .card {
+    flex-shrink: 0;
+    margin-right: 0;
+  }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .card {
+    padding: 28px 20px;
+    border-radius: var(--radius-lg);
+  }
+
+  .langGrid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+  }
+
+  .langBtn {
+    padding: 8px 2px;
+    font-size: 17px;
+  }
+
+  .langLabel {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 360px) {
+  .langGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
