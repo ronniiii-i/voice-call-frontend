@@ -1,4 +1,4 @@
-import styles from "../styles/PeerTile.module.css";
+import styles from "../styles/Peertile.module.css";
 
 interface PeerTileProps {
   name: string;
