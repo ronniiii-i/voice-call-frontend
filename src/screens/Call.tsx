@@ -77,7 +77,8 @@ export default function Call() {
           setLatestOriginal(original);
           if (msg.audioData) playAudio(msg.audioData);
           addEntry({
-            peerName: peerNameRef.current || "Peer",
+            speaker: "peer",
+            displayName: peerNameRef.current || "Peer",
             original,
             translated: text,
           });
@@ -89,9 +90,19 @@ export default function Call() {
           setLatestTranslated(text);
           setLatestOriginal(original);
           addEntry({
-            peerName: peerNameRef.current || "Peer",
+            speaker: "peer",
+            displayName: peerNameRef.current || "Peer",
             original,
             translated: text,
+          });
+          break;
+        }
+        case "self_caption": {
+          addEntry({
+            speaker: "me",
+            displayName: config?.displayName ?? "Me",
+            original: msg.text || "—",
+            translated: "",
           });
           break;
         }

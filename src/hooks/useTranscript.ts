@@ -3,8 +3,8 @@ import { useState, useCallback, useRef } from "react";
 export interface TranscriptEntry {
   id: string;
   timestamp: Date;
-  speaker: "peer";
-  peerName: string;
+  speaker: "me" | "peer";
+  displayName: string;
   original: string;
   translated: string;
 }
@@ -14,12 +14,17 @@ export function useTranscript() {
   const counterRef = useRef(0);
 
   const addEntry = useCallback(
-    (data: { peerName: string; original: string; translated: string }) => {
+    (data: {
+      speaker: "me" | "peer";
+      displayName: string;
+      original: string;
+      translated: string;
+    }) => {
       const entry: TranscriptEntry = {
         id: `t-${++counterRef.current}`,
         timestamp: new Date(),
-        speaker: "peer",
-        peerName: data.peerName,
+        speaker: data.speaker,
+        displayName: data.displayName,
         original: data.original,
         translated: data.translated,
       };
@@ -43,9 +48,13 @@ export function useTranscript() {
 
       entries.forEach((e) => {
         const time = e.timestamp.toLocaleTimeString();
-        lines.push(`[${time}] ${e.peerName}:`);
-        lines.push(`  Original:   ${e.original}`);
-        lines.push(`  Translated: ${e.translated}`);
+        lines.push(`[${time}] ${e.displayName}:`);
+        if (e.speaker === "peer") {
+          lines.push(`  Original:   ${e.original}`);
+          lines.push(`  Translated: ${e.translated}`);
+        } else {
+          lines.push(`  ${e.original}`);
+        }
         lines.push("");
       });
 

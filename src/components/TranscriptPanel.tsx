@@ -11,6 +11,7 @@ interface TranscriptPanelProps {
 
 export default function TranscriptPanel({
   entries,
+  // myName,
   scrollRef,
   latestOriginal,
 }: TranscriptPanelProps) {
@@ -19,7 +20,7 @@ export default function TranscriptPanel({
       <div className={styles.header}>
         <span className={styles.headerTitle}>Transcript</span>
         <span className={styles.headerCount}>
-          {entries.length} {entries.length === 1 ? "entry" : "entries"}
+          {entries.length} {entries.length === 1 ? "message" : "messages"}
         </span>
       </div>
 
@@ -32,25 +33,40 @@ export default function TranscriptPanel({
             </p>
           </div>
         ) : (
-          entries.map((entry) => (
-            <div key={entry.id} className={styles.entry}>
-              <div className={styles.entryHeader}>
-                <span className={styles.speakerName}>{entry.peerName}</span>
-                <span className={styles.timestamp}>
-                  {entry.timestamp.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                  })}
-                </span>
+          entries.map((entry) => {
+            const isMe = entry.speaker === "me";
+            return (
+              <div
+                key={entry.id}
+                className={`${styles.row} ${isMe ? styles.rowMe : styles.rowPeer}`}
+              >
+                <div
+                  className={`${styles.bubble} ${isMe ? styles.bubbleMe : styles.bubblePeer}`}
+                >
+                  <div className={styles.bubbleName}>
+                    {isMe ? "You" : entry.displayName}
+                  </div>
+                  <div className={styles.bubbleText}>
+                    {isMe ? entry.original : entry.translated}
+                  </div>
+                  {!isMe && entry.original && (
+                    <div className={styles.bubbleOriginal}>
+                      <span className={styles.originalLabel}>original</span>
+                      <span className={styles.originalText}>
+                        {entry.original}
+                      </span>
+                    </div>
+                  )}
+                  <div className={styles.bubbleTime}>
+                    {entry.timestamp.toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </div>
+                </div>
               </div>
-              <div className={styles.translated}>{entry.translated}</div>
-              <div className={styles.original}>
-                <span className={styles.originalLabel}>original</span>
-                <span className={styles.originalText}>{entry.original}</span>
-              </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
 
