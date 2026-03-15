@@ -43,7 +43,7 @@ export default function Lobby() {
   const [language, setLanguage] = useState(lastConfig?.nativeLanguage ?? "en");
   const [roomId, setRoomId] = useState("");
   const [serverUrl, setServerUrl] = useState(
-    lastConfig?.serverUrl ?? "ws://localhost:8000",
+    lastConfig?.serverUrl ?? import.meta.env.VITE_WS_URL.trim(),
   );
   const [showServer, setShowServer] = useState(false);
   const [error, setError] = useState("");
