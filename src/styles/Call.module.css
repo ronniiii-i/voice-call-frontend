@@ -1,0 +1,373 @@
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.03), transparent 28%),
+    linear-gradient(180deg, #090a0f 0%, #0c1018 52%, #080b12 100%);
+  overflow: hidden;
+  position: relative;
+}
+
+.bgGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 55% 34% at 50% 0%,
+    rgba(110, 168, 255, 0.08) 0%,
+    transparent 62%
+  );
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.35s ease, transform 0.35s ease, filter 0.35s ease;
+}
+
+.bgGlowConnected {
+  background:
+    radial-gradient(
+      ellipse 58% 36% at 50% 0%,
+      rgba(110, 168, 255, 0.12) 0%,
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 34% 22% at 50% 12%,
+      rgba(77, 211, 255, 0.08) 0%,
+      transparent 70%
+    );
+}
+
+.bgGlowActive {
+  filter: saturate(1.15);
+  transform: scale(1.02);
+  animation: callGlowPulse 1.8s ease-in-out infinite;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(11, 15, 24, 0.82);
+  backdrop-filter: blur(18px);
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+  gap: 16px;
+}
+
+.headerGroup {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-width: 0;
+  flex: 1 1 320px;
+}
+
+.roomChip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  min-width: 0;
+}
+
+.roomLabel {
+  font-size: 10px;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.roomCode {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text);
+  letter-spacing: 0.06em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copyBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  line-height: 1;
+  padding: 0;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+  color: var(--text2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copyBtn:hover {
+  opacity: 1;
+}
+
+.copyBtn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.callMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.callMetaLabel {
+  font-size: 11px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+
+.callMetaValue {
+  font-size: 13px;
+  color: var(--text2);
+  white-space: normal;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-left: auto;
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  transition: background 0.3s;
+  flex-shrink: 0;
+}
+
+.statusDotConnected {
+  background: var(--green);
+}
+
+.statusDotError {
+  background: var(--red);
+}
+
+.statusDotDefault {
+  background: var(--amber);
+}
+
+.statusText {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text2);
+  min-width: 68px;
+  text-transform: capitalize;
+}
+
+.main {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1680px;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  padding: 20px 24px 0;
+  gap: 20px;
+}
+
+.stage {
+  flex: 1 1 720px;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 24px;
+  overflow: hidden;
+  backdrop-filter: blur(18px);
+}
+
+.stageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.stageEyebrow {
+  font-size: 11px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+
+.stageTitle {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  color: var(--text);
+  letter-spacing: -0.04em;
+}
+
+.stageStatus {
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: right;
+}
+
+.stageStatusLabel {
+  color: var(--accent2);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.stageStatusText {
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.tiles {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  padding: 24px;
+  overflow: auto;
+  align-content: start;
+}
+
+.transcriptWrap {
+  flex: 1 1 320px;
+  width: min(420px, 34vw);
+  min-width: 280px;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(18px);
+}
+
+@keyframes callGlowPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.82;
+  }
+}
+
+@media (max-width: 1024px) {
+  .main {
+    padding: 16px 16px 0;
+    gap: 16px;
+  }
+
+  .stageHeader {
+    padding: 18px 18px 16px;
+  }
+
+  .tiles {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+
+  .transcriptWrap {
+    width: min(360px, 38vw);
+    min-width: 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .topBar {
+    padding: 12px 14px;
+  }
+
+  .headerGroup {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .main {
+    padding: 12px 12px 0;
+    gap: 12px;
+  }
+
+  .stage {
+    flex: 1 1 0;
+    border-radius: 18px;
+  }
+
+  .stageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 16px 12px;
+  }
+
+  .stageStatus {
+    max-width: none;
+    text-align: left;
+  }
+
+  .tiles {
+    grid-template-columns: 1fr;
+    padding: 14px;
+  }
+
+  .transcriptWrap {
+    flex: 0 0 min(42vw, 320px);
+    width: min(42vw, 320px);
+    min-height: 320px;
+    min-width: 220px;
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 380px) {
+  .roomChip {
+    display: none;
+  }
+
+  .statusRow {
+    min-width: 0;
+    padding: 0 10px;
+  }
+}
