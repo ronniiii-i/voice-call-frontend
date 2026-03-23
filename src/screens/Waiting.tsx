@@ -22,7 +22,6 @@ export default function Waiting() {
   const mountedRef = useRef(true);
   const redirectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Animated dots for loading states
   useEffect(() => {
     const id = setInterval(() => {
       setDots((d) => (d.length >= 3 ? "" : d + "."));
@@ -31,7 +30,6 @@ export default function Waiting() {
   }, []);
 
   useEffect(() => {
-    // No session means user landed on /waiting directly without going through lobby
     if (!config || !roomId) {
       navigate("/", { replace: true });
       return;
@@ -69,7 +67,6 @@ export default function Waiting() {
         };
         if (msg.type === "peer_joined") {
           setPhase("peer_joined");
-          // Brief pause so user sees the "peer joined" state, then navigate
           redirectTimer.current = setTimeout(() => {
             if (mountedRef.current) {
               navigate(`/call/${roomId}`, { replace: true });
@@ -89,7 +86,6 @@ export default function Waiting() {
 
     ws.onclose = (e) => {
       if (!mountedRef.current) return;
-      // Don't show error if we're about to redirect (peer_joined phase)
       if (phase !== "peer_joined") {
         setPhase("error");
         setErrorMsg(`Disconnected (code ${e.code}). The room may have closed.`);
@@ -99,8 +95,6 @@ export default function Waiting() {
     return () => {
       mountedRef.current = false;
       if (redirectTimer.current) clearTimeout(redirectTimer.current);
-      // Don't close the socket here — pass it through to Call via sessionStorage flag
-      // The Call screen will open its own connection fresh
       ws.close();
       wsRef.current = null;
     };
@@ -121,101 +115,116 @@ export default function Waiting() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.bg} />
+      <div className={styles.bg} aria-hidden="true" />
 
-      <div className={styles.card}>
-        {/* Logo */}
-        <div className={styles.logo}>
-          <div className={styles.logoMark}>LC</div>
-          <span className={styles.logoText}>LinguaCall</span>
-        </div>
-
-        {/* Phase: connecting */}
-        {phase === "connecting" && (
-          <div className={styles.stateBlock}>
-            <div className={styles.spinner} />
-            <h2 className={styles.stateTitle}>Connecting{dots}</h2>
-            <p className={styles.stateBody}>
-              Establishing connection to the server.
-            </p>
-          </div>
-        )}
-
-        {/* Phase: waiting for peer */}
-        {phase === "waiting" && (
-          <div className={styles.stateBlock}>
-            <div className={styles.pulseRing}>
-              <div className={styles.pulseCore} />
+      <div className={styles.shell}>
+        <div className={styles.card}>
+          {phase === "connecting" && (
+            <div className={styles.stateBlock}>
+              <div className={styles.spinnerWrap}>
+                <div className={styles.spinner} />
+              </div>
+              <h2 className={styles.stateTitle}>Connecting{dots}</h2>
+              <p className={styles.stateBody}>Connecting you to the room.</p>
             </div>
-            <h2 className={styles.stateTitle}>
-              Waiting for someone to join{dots}
-            </h2>
-            <p className={styles.stateBody}>
-              Share the room code below with the person you want to call.
-            </p>
+          )}
 
-            <div className={styles.roomCodeBlock}>
-              <span className={styles.roomCodeLabel}>Room code</span>
-              <div className={styles.roomCodeRow}>
-                <span className={styles.roomCode}>{roomId}</span>
-                <button
-                  className={styles.copyBtn}
-                  onClick={copyRoomCode}
-                  type="button"
-                >
-                  Copy
-                </button>
+          {phase === "waiting" && (
+            <div className={styles.stateBlock}>
+              <div className={styles.pulseRing}>
+                <div className={styles.pulseCore} />
+              </div>
+              <h2 className={styles.stateTitle}>Waiting for connection{dots}</h2>
+              <p className={styles.stateBody}>Share the code below to continue.</p>
+
+              <div className={styles.roomCodeBlock}>
+                <span className={styles.roomCodeLabel}>Room code</span>
+                <div className={styles.roomCodeRow}>
+                  <span className={styles.roomCode}>{roomId}</span>
+                  <button
+                    className={styles.copyBtn}
+                    onClick={copyRoomCode}
+                    type="button"
+                  >
+                    Copy code
+                  </button>
+                </div>
+              </div>
+
+              <div className={styles.youRow}>
+                <div className={styles.youAvatar}>
+                  {config?.displayName.slice(0, 2).toUpperCase()}
+                </div>
+                <div className={styles.youInfo}>
+                  <span className={styles.youName}>{config?.displayName}</span>
+                  <span className={styles.youLang}>{config?.languageLabel}</span>
+                </div>
+                <span className={styles.youBadge}>You</span>
               </div>
             </div>
+          )}
 
-            <div className={styles.youRow}>
-              <div className={styles.youAvatar}>
-                {config?.displayName.slice(0, 2).toUpperCase()}
+          {phase === "peer_joined" && (
+            <div className={styles.stateBlock}>
+              <div className={`${styles.statusIcon} ${styles.statusSuccess}`}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M6 12.5l4 4L18.5 8"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </div>
-              <div className={styles.youInfo}>
-                <span className={styles.youName}>{config?.displayName}</span>
-                <span className={styles.youLang}>{config?.languageLabel}</span>
-              </div>
-              <span className={styles.youBadge}>you</span>
+              <h2 className={styles.stateTitle}>Connected</h2>
+              <p className={styles.stateBody}>Starting the call now...</p>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Phase: peer just joined */}
-        {phase === "peer_joined" && (
-          <div className={styles.stateBlock}>
-            <div className={styles.successIcon}>✓</div>
-            <h2 className={styles.stateTitle}>Someone joined!</h2>
-            <p className={styles.stateBody}>Starting the call now…</p>
-          </div>
-        )}
+            {phase === "error" && (
+              <div className={styles.stateBlock}>
+                <div className={`${styles.statusIcon} ${styles.statusError}`}>
+                  <svg width="42" height="42" viewBox="0 0 48 48" fill="none">
+                    <circle
+                      cx="24"
+                      cy="24"
+                      r="18"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      opacity="0.35"
+                    />
+                    <path
+                      d="M18 18l12 12M30 18L18 30"
+                      stroke="currentColor"
+                      strokeWidth="3.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <h2 className={styles.stateTitle}>Connection failed</h2>
+              <p className={`${styles.stateBody} ${styles.errorText}`}>{errorMsg}</p>
+              <button
+                className={styles.retryBtn}
+                onClick={handleRetry}
+                type="button"
+              >
+                Back to lobby
+              </button>
+            </div>
+          )}
 
-        {/* Phase: error */}
-        {phase === "error" && (
-          <div className={styles.stateBlock}>
-            <div className={styles.errorIcon}>✕</div>
-            <h2 className={styles.stateTitle}>Connection failed</h2>
-            <p className={styles.stateBody}>{errorMsg}</p>
+          {(phase === "connecting" || phase === "waiting") && (
             <button
-              className={styles.retryBtn}
-              onClick={handleRetry}
+              className={styles.cancelBtn}
+              onClick={handleCancel}
               type="button"
             >
-              Back to lobby
+              Cancel
             </button>
-          </div>
-        )}
-
-        {/* Cancel button (shown during connecting/waiting only) */}
-        {(phase === "connecting" || phase === "waiting") && (
-          <button
-            className={styles.cancelBtn}
-            onClick={handleCancel}
-            type="button"
-          >
-            Cancel
-          </button>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

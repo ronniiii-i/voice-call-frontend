@@ -37,10 +37,8 @@ export default function PeerTile({
           <span className={styles.initials}>{initials}</span>
         </div>
 
-        {/* Peer connected ripple */}
         {!isSelf && isConnected && <span className={styles.ripple} />}
 
-        {/* Mic activity ripple on self tile */}
         {isSelf && isStreaming && !isMuted && (
           <div className={styles.micRippleWrap}>
             <span
@@ -62,9 +60,7 @@ export default function PeerTile({
           {!isSelf && isConnected && <span className={styles.onlineDot} />}
         </div>
         <span className={styles.lang}>{language}</span>
-        {isSelf && isMuted && (
-          <span className={styles.mutedBadge}>🔇 muted</span>
-        )}
+        {isSelf && isMuted && <span className={styles.mutedBadge}>Muted</span>}
       </div>
 
       {latestCaption && <div className={styles.caption}>{latestCaption}</div>}
