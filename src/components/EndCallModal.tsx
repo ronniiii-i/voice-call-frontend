@@ -14,12 +14,11 @@ export default function EndCallModal({
   return (
     <div className={styles.overlay} onClick={onCancel}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.icon}>📵</div>
-        <h2 className={styles.title}>End this call?</h2>
+        <h2 className={styles.title}>End call?</h2>
         <p className={styles.body}>
           {hasTranscript
-            ? "Your transcript will be lost unless you download it first."
-            : "The call will be disconnected."}
+            ? "Download your transcript before leaving, or end the call now."
+            : "This will disconnect the call immediately."}
         </p>
 
         <div className={styles.actions}>
@@ -33,7 +32,7 @@ export default function EndCallModal({
               onClick={() => onConfirm(true)}
               type="button"
             >
-              ⬇️ Download &amp; end
+              Download & end
             </button>
           )}
 

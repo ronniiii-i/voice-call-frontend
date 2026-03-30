@@ -1,228 +1,177 @@
-/* ── Page ───────────────────────────────────────────────────────────────── */
 .page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 16px;
+  padding: 28px 18px;
   position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #090a0f 0%, #0c1018 52%, #080b12 100%);
 }
 
 .bg {
   position: fixed;
   inset: 0;
-  background: radial-gradient(
-    ellipse 70% 50% at 50% 0%,
-    rgba(124, 106, 255, 0.15) 0%,
-    transparent 65%
-  );
   pointer-events: none;
-  z-index: 0;
+  background: radial-gradient(
+    circle at top,
+    rgba(255, 255, 255, 0.03),
+    transparent 32%
+  );
 }
 
-/* ── Card ───────────────────────────────────────────────────────────────── */
-.card {
-  width: 100%;
-  max-width: 420px;
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  padding: 36px 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+.shell {
   position: relative;
   z-index: 1;
-  animation: fadeUp 0.4s ease;
+  width: min(400px, 100%);
 }
 
-/* ── Logo ───────────────────────────────────────────────────────────────── */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  align-self: flex-start;
-  margin-bottom: 16px;
+.card {
+  padding: 24px 20px;
+  border-radius: 18px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  box-shadow: var(--shadow);
 }
 
-.logoMark {
-  width: 28px;
-  height: 28px;
-  border-radius: 7px;
-  background: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 800;
-  color: #fff;
-  font-family: var(--font-display);
+.stateBlock,
+.cancelBtn,
+.retryBtn {
+  position: relative;
+  z-index: 1;
 }
 
-.logoText {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--text);
-}
-
-/* ── State block ────────────────────────────────────────────────────────── */
 .stateBlock {
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 8px 0;
   text-align: center;
+  gap: 12px;
 }
 
 .stateTitle {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 700;
+  min-height: 30px;
   color: var(--text);
-  letter-spacing: -0.02em;
-  min-height: 30px; /* prevent layout shift from dots animating */
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
 .stateBody {
-  font-size: 14px;
-  color: var(--text2);
-  line-height: 1.6;
   max-width: 300px;
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-/* ── Spinner (connecting phase) ─────────────────────────────────────────── */
+.spinnerWrap,
+.pulseRing,
+.statusIcon {
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 .spinner {
-  width: 44px;
-  height: 44px;
-  border: 3px solid var(--border2);
-  border-top-color: var(--accent);
-  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  border-top-color: #8bb8ff;
+  border-radius: 999px;
   animation: spin 0.9s linear infinite;
-  margin-bottom: 4px;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ── Pulse ring (waiting phase) ─────────────────────────────────────────── */
 .pulseRing {
   position: relative;
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 4px;
 }
 
-.pulseRing::before,
-.pulseRing::after {
-  content: '';
+.pulseRing::before {
+  content: "";
   position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
-  opacity: 0;
-  animation: ripple 2s ease-out infinite;
-}
-
-.pulseRing::after {
-  animation-delay: 1s;
+  inset: 10px;
+  border-radius: 999px;
+  border: 2px solid rgba(139, 184, 255, 0.34);
 }
 
 .pulseCore {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--accent-bg);
-  border: 2px solid var(--accent);
-  position: relative;
-  z-index: 1;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #8bb8ff;
 }
 
-/* ── Room code block ────────────────────────────────────────────────────── */
-.roomCodeBlock {
+.roomCodeBlock,
+.youRow {
   width: 100%;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 4px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .roomCodeLabel {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text3);
   font-size: 11px;
-  font-weight: 600;
-  color: var(--text2);
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
 }
 
 .roomCodeRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
 }
 
 .roomCode {
+  color: var(--text);
   font-family: var(--font-mono);
   font-size: 20px;
   font-weight: 500;
-  color: var(--text);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
 }
 
 .copyBtn {
-  padding: 6px 14px;
-  background: var(--accent-bg);
-  border: 1px solid rgba(124, 106, 255, 0.3);
-  border-radius: var(--radius-xs);
-  color: var(--accent2);
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(139, 184, 255, 0.18);
+  background: rgba(139, 184, 255, 0.1);
+  color: #d5e6ff;
   font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: var(--font-body);
-  transition: all 0.15s;
-  flex-shrink: 0;
+  font-weight: 600;
+  transition: background-color 0.15s ease;
 }
 
 .copyBtn:hover {
-  background: rgba(124, 106, 255, 0.2);
+  background: rgba(139, 184, 255, 0.16);
 }
 
-/* ── You row ────────────────────────────────────────────────────────────── */
 .youRow {
-  width: 100%;
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 12px 14px;
 }
 
 .youAvatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #82b7ff 0%, #6ea8ff 100%);
+  color: #08111d;
   font-family: var(--font-display);
-  font-weight: 700;
   font-size: 14px;
-  color: #fff;
+  font-weight: 800;
   flex-shrink: 0;
 }
 
@@ -230,114 +179,114 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  flex: 1;
   min-width: 0;
+  flex: 1;
+  text-align: left;
 }
 
 .youName {
+  color: var(--text);
   font-size: 14px;
   font-weight: 600;
-  color: var(--text);
-  font-family: var(--font-display);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .youLang {
+  color: var(--text3);
   font-size: 12px;
-  color: var(--text2);
 }
 
 .youBadge {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--accent2);
-  background: var(--accent-bg);
-  padding: 2px 8px;
-  border-radius: 20px;
-  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(139, 184, 255, 0.12);
+  color: #d5e6ff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  flex-shrink: 0;
 }
 
-/* ── Success icon ───────────────────────────────────────────────────────── */
-.successIcon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--green-bg);
-  border: 2px solid var(--green);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  color: var(--green);
-  font-weight: 700;
-  animation: fadeIn 0.3s ease;
-  margin-bottom: 4px;
+.statusSuccess {
+  color: #86efac;
+  border-color: rgba(52, 211, 153, 0.24);
+  background: rgba(52, 211, 153, 0.08);
 }
 
-/* ── Error icon ─────────────────────────────────────────────────────────── */
-.errorIcon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--red-bg);
-  border: 2px solid var(--red);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  color: var(--red);
-  font-weight: 700;
-  margin-bottom: 4px;
+.statusError {
+  color: #ffb4b4;
+  border-color: rgba(248, 113, 113, 0.18);
+  background: rgba(255, 255, 255, 0.04);
 }
 
-/* ── Buttons ────────────────────────────────────────────────────────────── */
-.cancelBtn {
+.errorText {
+  color: #c8d1e1;
+}
+
+.cancelBtn,
+.retryBtn {
   width: 100%;
-  padding: 11px;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text2);
+  min-height: 48px;
+  margin-top: 16px;
+  border-radius: 12px;
   font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: var(--font-body);
-  transition: all 0.15s;
-  margin-top: 8px;
+  font-weight: 600;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.cancelBtn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #b6c2d9;
 }
 
 .cancelBtn:hover {
-  background: var(--bg4);
-  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .retryBtn {
-  padding: 10px 24px;
-  background: var(--accent);
-  border: none;
-  border-radius: var(--radius-sm);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: var(--font-body);
-  transition: opacity 0.15s;
-  margin-top: 4px;
+  background: linear-gradient(180deg, #82b7ff 0%, #6ea8ff 100%);
+  color: #08111d;
 }
 
-.retryBtn:hover { opacity: 0.88; }
+.retryBtn:hover {
+  opacity: 0.94;
+}
 
-/* ── Responsive ─────────────────────────────────────────────────────────── */
-@media (max-width: 480px) {
-  .card {
-    padding: 28px 20px;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 560px) {
+  .page {
+    padding: 20px 14px;
   }
 
-  .roomCode {
-    font-size: 17px;
+  .card {
+    padding: 20px 16px;
+  }
+
+  .roomCodeRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .copyBtn,
+  .retryBtn,
+  .cancelBtn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
   }
 }

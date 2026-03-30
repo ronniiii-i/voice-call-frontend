@@ -181,3 +181,9 @@ src/
   ```ts
   const cls = [styles.btn, isActive ? styles.btnActive : ""].join(" ")
   ```
+
+---
+
+## Collaboration
+
+Create a feature branch from `main`, commit your changes there, and open a pull request back into `main`.

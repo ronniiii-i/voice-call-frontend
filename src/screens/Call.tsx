@@ -28,9 +28,9 @@ export default function Call() {
   const [showEndModal, setShowEndModal] = useState(false);
   const [callSeconds, setCallSeconds] = useState(0);
   const [latestTranslated, setLatestTranslated] = useState(
-    "Waiting for translation…",
+    "Waiting for translation...",
   );
-  const [latestOriginal, setLatestOriginal] = useState("—");
+  const [latestOriginal, setLatestOriginal] = useState("-");
   const [isReconnecting, setIsReconnecting] = useState(false);
 
   const isMutedRef = useRef(false);
@@ -40,7 +40,6 @@ export default function Call() {
   const { playAudio, stopAudio } = useAudioPlayback();
   const { entries, addEntry, downloadTranscript, clear } = useTranscript();
 
-  // If no session in storage, this is a cold reload — send back to waiting room
   useEffect(() => {
     if (!config || !roomId) {
       navigate(`/waiting/${roomId ?? ""}`, { replace: true });
@@ -71,8 +70,8 @@ export default function Call() {
           setPeerName(null);
           break;
         case "audio_with_caption": {
-          const text = msg.text || "—";
-          const original = msg.original || "—";
+          const text = msg.text || "-";
+          const original = msg.original || "-";
           setLatestTranslated(text);
           setLatestOriginal(original);
           if (msg.audioData) playAudio(msg.audioData);
@@ -85,8 +84,8 @@ export default function Call() {
           break;
         }
         case "caption": {
-          const text = msg.text || "—";
-          const original = msg.original || "—";
+          const text = msg.text || "-";
+          const original = msg.original || "-";
           setLatestTranslated(text);
           setLatestOriginal(original);
           addEntry({
@@ -101,7 +100,7 @@ export default function Call() {
           addEntry({
             speaker: "me",
             displayName: config?.displayName ?? "Me",
-            original: msg.text || "—",
+            original: msg.text || "-",
             translated: "",
           });
           break;
@@ -125,13 +124,11 @@ export default function Call() {
 
   const { isStreaming, startStreaming, stopStreaming } = useAudioStream();
 
-  // Connect on mount — handles both normal entry and reload
   useEffect(() => {
     if (!config || !roomId) return;
     let cancelled = false;
 
     const start = async () => {
-      // On reload, show reconnecting state briefly
       if (isReconnecting) setIsReconnecting(true);
       try {
         await connect(
@@ -160,20 +157,17 @@ export default function Call() {
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Keepalive ping every 25s
   useEffect(() => {
     const id = setInterval(() => sendJson({ type: "ping" }), 25_000);
     return () => clearInterval(id);
   }, [sendJson]);
 
-  // Call timer
   useEffect(() => {
     if (connStatus !== "connected") return;
     const id = setInterval(() => setCallSeconds((s) => s + 1), 1000);
     return () => clearInterval(id);
   }, [connStatus]);
 
-  // Auto-scroll transcript
   useEffect(() => {
     if (transcriptRef.current) {
       transcriptRef.current.scrollTop = transcriptRef.current.scrollHeight;
@@ -218,29 +212,39 @@ export default function Call() {
         : styles.statusDotDefault,
   ].join(" ");
 
+  const glowClass = [
+    styles.bgGlow,
+    hasPeer ? styles.bgGlowConnected : "",
+    isStreaming && !isMuted ? styles.bgGlowActive : "",
+  ].join(" ");
+
   if (!config) return null;
 
   return (
     <div className={styles.page}>
-      <div className={styles.bgGlow} />
+      <div className={glowClass} />
 
       <header className={styles.topBar}>
-        <div className={styles.logoSmall}>
-          <div className={styles.logoMark}>LC</div>
-          <span className={styles.logoText}>LinguaCall</span>
-        </div>
+        <div className={styles.headerGroup}>
+          <div className={styles.roomChip}>
+            <span className={styles.roomLabel}>Room</span>
+            <span className={styles.roomCode}>{roomId}</span>
+            <button
+              className={styles.copyBtn}
+              onClick={() => navigator.clipboard.writeText(roomId ?? "")}
+              title="Copy room code"
+              type="button"
+            >
+              <CopyIcon />
+            </button>
+          </div>
 
-        <div className={styles.roomChip}>
-          <span className={styles.roomLabel}>Room</span>
-          <span className={styles.roomCode}>{roomId}</span>
-          <button
-            className={styles.copyBtn}
-            onClick={() => navigator.clipboard.writeText(roomId ?? "")}
-            title="Copy room code"
-            type="button"
-          >
-            📋
-          </button>
+          <div className={styles.callMeta}>
+            <span className={styles.callMetaLabel}>Live call</span>
+            <span className={styles.callMetaValue}>
+              {hasPeer ? "2 participants" : "Waiting for peer"}
+            </span>
+          </div>
         </div>
 
         <div className={styles.statusRow}>
@@ -252,34 +256,50 @@ export default function Call() {
       </header>
 
       <main className={styles.main}>
-        <div className={styles.tiles}>
-          <PeerTile
-            name={config.displayName}
-            language={config.languageLabel}
-            isSelf
-            isMuted={isMuted}
-            isStreaming={isStreaming}
-          />
-          {/* Second tile only shown once peer has joined */}
-          {hasPeer && (
+        <section className={styles.stage}>
+          <div className={styles.stageHeader}>
+            <div>
+              <p className={styles.stageEyebrow}>Participants</p>
+              <h1 className={styles.stageTitle}>Conversation</h1>
+            </div>
+            <div className={styles.stageStatus}>
+              <span className={styles.stageStatusLabel}>
+                {hasPeer ? "Connected" : "Standby"}
+              </span>
+              <span className={styles.stageStatusText}>
+                {hasPeer ? latestTranslated : "Waiting for the other participant"}
+              </span>
+            </div>
+          </div>
+
+          <div className={styles.tiles}>
             <PeerTile
-              name={peerName || "Participant"}
-              language="—"
-              isConnected
-              latestCaption={latestTranslated}
+              name={config.displayName}
+              language={config.languageLabel}
+              isSelf
+              isMuted={isMuted}
+              isStreaming={isStreaming}
             />
-          )}
-        </div>
+            {hasPeer && (
+              <PeerTile
+                name={peerName || "Participant"}
+                language="-"
+                isConnected
+                latestCaption={latestTranslated}
+              />
+            )}
+          </div>
+        </section>
 
         {showTranscript && (
-          <div className={styles.transcriptWrap}>
+          <aside className={styles.transcriptWrap}>
             <TranscriptPanel
               entries={entries}
               myName={config.displayName}
               scrollRef={transcriptRef}
               latestOriginal={hasPeer ? latestOriginal : undefined}
             />
-          </div>
+          </aside>
         )}
       </main>
 
@@ -303,5 +323,28 @@ export default function Call() {
         />
       )}
     </div>
+  );
+}
+
+function CopyIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        d="M9 9.5A2.5 2.5 0 0 1 11.5 7h6A2.5 2.5 0 0 1 20 9.5v8a2.5 2.5 0 0 1-2.5 2.5h-6A2.5 2.5 0 0 1 9 17.5v-8Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M15 7V6.5A2.5 2.5 0 0 0 12.5 4h-6A2.5 2.5 0 0 0 4 6.5v8A2.5 2.5 0 0 0 6.5 17H7"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

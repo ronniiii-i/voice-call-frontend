@@ -56,8 +56,17 @@
 }
 
 .btnIcon {
-  font-size: 17px;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
+}
+
+.btnIcon svg {
+  width: 18px;
+  height: 18px;
 }
 
 .btnLabel {
@@ -89,9 +98,6 @@
 .endBtn:hover  { opacity: 0.88; }
 .endBtn:active { transform: scale(0.98); }
 
-.endIcon {
-  font-size: 15px;
-}
 
 /* ── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 640px) {

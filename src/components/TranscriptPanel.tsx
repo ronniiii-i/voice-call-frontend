@@ -27,7 +27,25 @@ export default function TranscriptPanel({
       <div className={styles.scroll} ref={scrollRef}>
         {entries.length === 0 ? (
           <div className={styles.empty}>
-            <div className={styles.emptyIcon}>💬</div>
+            <div className={styles.emptyIcon}>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M5 6.5A2.5 2.5 0 0 1 7.5 4h9A2.5 2.5 0 0 1 19 6.5v6A2.5 2.5 0 0 1 16.5 15H11l-4 4v-4H7.5A2.5 2.5 0 0 1 5 12.5v-6Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M9 8.5h6M9 11.5h4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
             <p className={styles.emptyText}>
               Translations will appear here as the conversation unfolds.
             </p>
@@ -70,7 +88,7 @@ export default function TranscriptPanel({
         )}
       </div>
 
-      {latestOriginal && latestOriginal !== "—" && (
+      {latestOriginal && latestOriginal !== "-" && (
         <div className={styles.liveBar}>
           <span className={styles.liveDot} />
           <span className={styles.liveText}>{latestOriginal}</span>
